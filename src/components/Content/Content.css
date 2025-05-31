@@ -1,0 +1,23 @@
+.contentBackground {
+    background-color: #0d0d0e;
+    height: 92%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentContainer {
+    border-radius: 16px;
+    width: 80%;
+    height: 75%;
+    background-color: #131517;
+    display: flex;
+    justify-content: center;
+}
+
+.contentTitle {
+    margin-top: 0.5em;
+    font-weight: 500;
+    font-size: 2em;
+}
