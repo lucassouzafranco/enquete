@@ -1,0 +1,9 @@
+.menuContainer {   
+    display: flex;
+    justify-content: center;
+    background-color: #131517;
+    height: 4.5vh;
+    width: 100%;
+    margin-top: -0.5em;
+    align-items: center;
+}
