@@ -1,0 +1,6 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY ../urna/ /app
+COPY ../shared/ /app/shared
+RUN pip install pika
+CMD ["python", "producer.py"]
