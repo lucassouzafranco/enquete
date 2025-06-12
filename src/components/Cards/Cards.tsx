@@ -1,36 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Cards.css";
 import avatar1 from "../../assets/avatar john doe.png";
 import avatar2 from "../../assets/avatar marry jane.png";
 import avatar3 from "../../assets/avatar dr auzio.png";
 
-
 export default function Cards() {
+    const [votedCandidate, setVotedCandidate] = useState(null);
+
+    const candidates = [
+        { id: 1, name: "John Doe", img: avatar1 },
+        { id: 2, name: "Marry Jane", img: avatar2 },
+        { id: 3, name: "Dr. Auzio", img: avatar3 },
+    ];
+
+    const handleVote = (id) => {
+        setVotedCandidate(id);
+    };
+
+    const clearVote = () => {
+        setVotedCandidate(null);
+    };
+
+    // Reorganiza para deixar o votado no centro
+    let orderedCandidates = [...candidates];
+    if (votedCandidate) {
+        const voted = orderedCandidates.find(c => c.id === votedCandidate);
+        const others = orderedCandidates.filter(c => c.id !== votedCandidate);
+        orderedCandidates = [others[0], voted, others[1]];
+    }
+
     return (
-        <>
-            <div className="cardsContainer">
-                <div className="card">
-                    <img src={avatar1} alt="John Doe image" className="avatarImage" />
-                    <span className="profileName">John Doe</span>
-                    <button className="voteButton"><p>votar</p></button>
-                </div>
-            </div>
+        <div className="cardsRoot">
+            {votedCandidate && <div className="overlay" onClick={clearVote} />}
 
-            <div className="cardsContainer">
-                <div className="card">
-                    <img src={avatar2} alt="Marry Jane image" className="avatarImage" />
-                    <span className="profileName">Marry Jane</span>
-                    <button className="voteButton"><p>votar</p></button>
-                </div>
+            <div className="cardsWrapper">
+                {orderedCandidates.map((candidate) => (
+                    <div
+                        key={candidate.id}
+                        className={`card 
+                            ${votedCandidate && votedCandidate !== candidate.id ? "faded" : ""} 
+                            ${votedCandidate === candidate.id ? "selectedCard" : ""}
+                        `}
+                    >
+                        <img src={candidate.img} alt={`${candidate.name} image`} className="avatarImage" />
+                        <span className="profileName">{candidate.name}</span>
+                        <button className="voteButton" onClick={() => handleVote(candidate.id)}>
+                            <p>{votedCandidate === candidate.id ? "Confirmo meu voto" : "votar"}</p>
+                        </button>
+                    </div>
+                ))}
             </div>
-
-            <div className="cardsContainer">
-                <div className="card">
-                    <img src={avatar3} alt="Dr. Auzio image" className="avatarImage" />
-                    <span className="profileName">Dr. Auzio</span>
-                    <button className="voteButton"><p>votar</p></button>
-                </div>
-            </div>
-        </>
+        </div>
     );
 }
