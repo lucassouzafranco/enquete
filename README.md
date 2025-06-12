@@ -1,12 +1,41 @@
-# React + Vite
+# Sistema de Votação Distribuído
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto, desenvolvido por um grupo de alunos da UFV, implementa um sistema de votação que aplica conceitos de **Sistemas Distribuídos**. Ele foi projetado para demonstrar como diferentes componentes podem interagir em um ambiente distribuído para coletar, agregar e armazenar votos de forma eficiente e centralizada.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Organização do Projeto
 
-## Expanding the ESLint configuration
+O sistema é composto pelos seguintes módulos principais:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **`urna`**: Este é o **front-end principal** do sistema. Ele inclui:
+    * Uma interface para os eleitores registrarem seus votos.
+    * Um **dashboard** para monitoramento da fila de votação.
+* **`agregador`**: Atuando como um **nó distribuído**, o agregador é responsável por:
+    * Coletar os dados da fila de mensagens (onde os votos são inicialmente enviados).
+    * Agregar esses dados.
+    * Encaminhá-los para o **nó central** (`core`).
+    * *O link para o repositório do nó central (core) será inserido aqui quando disponível.*
+* **`core`**: Este é o **nó central** onde os votos são armazenados de forma centralizada. Ele serve como o repositório final para todos os votos, sendo compartilhado por diversos grupos que utilizam o mesmo sistema.
+
+---
+
+## Como Executar
+
+Para colocar o sistema em funcionamento, siga os passos abaixo:
+
+1.  **Pré-requisitos**: Certifique-se de ter o **Docker** e o **Docker Compose** instalados em seu ambiente.
+2.  **Execução**: Navegue até o diretório raiz do projeto e execute o arquivo de orquestração `docker-compose.yml` utilizando o seguinte comando:
+
+    ```bash
+    sudo docker-compose up --build
+    ```
+
+Ao executar o comando, três contêineres serão criados e inicializados:
+
+* Um contêiner para o sistema de mensageria (**RabbitMQ**), responsável pela comunicação entre os componentes.
+* Um contêiner para o **backend da urna**, que gerencia a lógica de votação.
+* Um contêiner para o **nó coletor (`agregador`)**, que processa e encaminha os votos para o nó central.
+
+---
+
