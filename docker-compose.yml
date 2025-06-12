@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  urna:
+    build:
+      context: ./votacao_sistema/urna
+      dockerfile: Dockerfile.urna
+    container_name: urna
+    ports:
+      - "5000:5000"
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./votacao_sistema/urna:/app
+    command: python app.py

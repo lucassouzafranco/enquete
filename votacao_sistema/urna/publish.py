@@ -2,8 +2,10 @@ import pika
 
 def publish_message(queue_name: str, message: str):
 
+    print(message, flush=True)
+
     connection_params = pika.ConnectionParameters(
-        host='localhost',  # substituir
+        host='rabbitmq',  # substituir
         port=5672,
         credentials=pika.PlainCredentials('guest', 'guest')
     )
