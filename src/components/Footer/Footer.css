@@ -1,0 +1,14 @@
+.footerContainer {
+    background-color: #0d0d0e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footerContainer p {
+    color: white;
+    font-family: jetbrains-mono, monospace;
+    font-weight: 600;
+    margin-right: 1.6em;
+    font-size: 1em;
+}
