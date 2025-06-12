@@ -1,6 +1,6 @@
 .contentBackground {
     background-color: #0d0d0e;
-    height: 92%;
+    height: 93%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -12,12 +12,18 @@
     width: 80%;
     height: 75%;
     background-color: #131517;
-    display: flex;
-    justify-content: center;
+    text-align: center;
 }
 
 .contentTitle {
     margin-top: 0.5em;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 2em;
+    color: white;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
