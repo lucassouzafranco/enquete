@@ -25,7 +25,7 @@ test_data = {
 
 def publish_messages():
     # Setup connection to RabbitMQ
-    connection_params = pika.ConnectionParameters(host=RABBITMQ_HOST, port=RABBITMQ_PORT)
+    connection_params = pika.ConnectionParameters(host='localhost', port=RABBITMQ_PORT)
     connection = pika.BlockingConnection(connection_params)
     channel = connection.channel()
 
