@@ -5,6 +5,7 @@ import time
 from dotenv import load_dotenv
 from pathlib import Path
 from core_connection import send_to_core
+from db import incrementa_candidato
 
 # Carrega variáveis de ambiente do .env no root do projeto
 env_path = Path(__file__).resolve().parent / '.env'
@@ -18,8 +19,26 @@ RABBITMQ_QUEUE = os.getenv("AGREGRADOR_QUEUE_NAME", "fila_agregador")
 def callback(ch, method, properties, body):
     try:
         data = json.loads(body)
-        send_to_core(data)
-        ch.basic_ack(delivery_tag=method.delivery_tag)  #Ack manual
+        #Salva no DB
+        data_points = data.get("dataPoints", [])
+
+        if not data_points:
+            print("[WARN] Nenhum voto encontrado em dataPoints")
+            ch.basic_ack(delivery_tag=method.delivery_tag)
+            return
+
+
+        for vote in data_points:
+            candidate_id = vote.get("objectIdentifier")
+            if candidate_id:
+                # incrementa_candidato(candidate_id)
+                send_to_core(data)
+                ch.basic_ack(delivery_tag=method.delivery_tag)  #Ack manual
+
+                print(f"[INFO] Voto registrado para {candidate_id}")
+            else:
+                print("[WARN] objectIdentifier ausente em um dataPoint")
+
     except Exception as e:
         print(f"Error processing message: {e}")
 

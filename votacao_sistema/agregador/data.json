@@ -1,0 +1,24 @@
+{
+    "batchId": "VOTOS_001",
+    "sourceNodeId": "URNA ALPHA",
+    "dataPoints": [
+        {
+            "type": "votacao",
+            "objectIdentifier": "CANDIDATO_A",
+            "valor": 300,
+            "datetime": 1750428295579
+        },
+        {
+            "type": "votacao",
+            "objectIdentifier": "CANDIDATO_B",
+            "valor": 300,
+            "datetime": 1750428295582
+        },
+        {
+            "type": "votacao",
+            "objectIdentifier": "CANDIDATO_C",
+            "valor": 600,
+            "datetime": 1750428295587
+        }
+    ]
+}

@@ -17,9 +17,9 @@ test_data = {
     "batchId": "VOTOS_001",
     "sourceNodeId": "URNA ALPHA",
     "dataPoints": [
-        {"type": "votacao", "objectIdentifier": "CANDIDADO_A", "valor": 1, "datetime": 1700000001000},
-        {"type": "votacao", "objectIdentifier": "CANDIDADO_B", "valor": 1, "datetime": 1700000002000},
-        {"type": "votacao", "objectIdentifier": "CANDIDADO_C", "valor": 1, "datetime": 1700000003000}
+        {"type": "votacao", "objectIdentifier": "CANDIDATO_A", "valor": 1, "datetime": 1700000001000},
+        {"type": "votacao", "objectIdentifier": "CANDIDATO_B", "valor": 1, "datetime": 1700000002000},
+        {"type": "votacao", "objectIdentifier": "CANDIDATO_C", "valor": 1, "datetime": 1700000003000}
     ]
 }
 
