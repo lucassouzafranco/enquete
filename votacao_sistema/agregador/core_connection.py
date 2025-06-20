@@ -4,7 +4,7 @@ from pathlib import Path
 import requests
 
 # Carrega variáveis de ambiente do .env no root do projeto
-env_path = Path(__file__).resolve().parents[2] / '.env'
+env_path = Path(__file__).resolve().parent / '.env'
 load_dotenv(dotenv_path=env_path)
 CORE_IP = os.getenv('CORE_IP')
 CORE_POST_ROUTE = os.getenv('CORE_POST_ROUTE')
@@ -27,6 +27,7 @@ def send_to_core(data: dict):
 
 
 if __name__ == "__main__":
+    # print(f"{CORE_IP}, {CORE_POST_ROUTE}")
     test_data = {
         "batchId": "VOTOS_001",
         "sourceNodeId": "URNA ALPHA",

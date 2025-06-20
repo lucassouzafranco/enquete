@@ -7,7 +7,7 @@ from pathlib import Path
 from core_connection import send_to_core
 
 # Carrega variáveis de ambiente do .env no root do projeto
-env_path = Path(__file__).resolve().parents[2] / '.env'
+env_path = Path(__file__).resolve().parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 RABBITMQ_HOST = os.getenv("AGREGRADOR_QUEUE_HOST", "localhost")
@@ -45,14 +45,15 @@ def start_consumer():
 
 
         except pika.exceptions.AMQPConnectionError as e:
-            print(f"[ERRO] Conexão com RabbitMQ falhou: {e}")
-            print("[INFO] Tentando novamente em 5 segundos...")
+            print(f"[ERRO] Conexão com RabbitMQ falhou: {e}", flush=True)
+            print("[INFO] Tentando novamente em 5 segundos...", flush=True)
             time.sleep(5)
         except Exception as e:
-            print(f"[ERRO] Erro inesperado: {e}")
-            print("[INFO] Tentando novamente em 5 segundos...")
+            print(f"[ERRO] Erro inesperado: {e}", flush=True)
+            print("[INFO] Tentando novamente em 5 segundos...", flush=True)
             time.sleep(5)
 
 
 if __name__ == '__main__':
+    # print(f"{RABBITMQ_HOST}, {RABBITMQ_PORT}, {RABBITMQ_QUEUE}")
     start_consumer()
