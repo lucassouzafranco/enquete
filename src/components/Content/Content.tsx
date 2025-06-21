@@ -1,13 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Content.css";
 import Cards from "../Cards/Cards";
 
 export default function Content() {
     const [votedCandidate, setVotedCandidate] = useState(null);
+    const navigate = useNavigate();
 
     const titleText = votedCandidate
         ? `Confirmação do Voto`
         : "Escolha o seu candidato(a) favorito(a)";
+
+    const handleConfirmVote = () => {
+        if (votedCandidate) {
+            // Salvar o candidato votado no localStorage para persistir entre páginas
+            localStorage.setItem('votedCandidate', JSON.stringify(votedCandidate));
+            navigate('/dashboard');
+        }
+    };
 
     return (
         <div className="contentBackground">
@@ -20,6 +30,7 @@ export default function Content() {
                     <Cards 
                         votedCandidate={votedCandidate}
                         setVotedCandidate={setVotedCandidate}
+                        onConfirmVote={handleConfirmVote}
                     />
                 </div>
 

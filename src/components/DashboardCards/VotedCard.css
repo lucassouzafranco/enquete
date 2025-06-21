@@ -1,0 +1,51 @@
+.votedCard {
+    position: relative;
+    width: 280px;
+    height: 400px;
+    background-color: #1C1E20;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.votedAvatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 7px solid #5744EE;
+    margin-bottom: 15px;
+    background: #2a2a4a;
+}
+
+.votedName {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+    color: #FFFFFF;
+}
+
+.votedVotes {
+    font-size: 16px;
+    color: #b0b0d0;
+    margin-bottom: 20px;
+}
+
+.votedStats {
+    font-size: 12px;
+}
+
+.lastMinuteVotes {
+    color: #5744EE;
+    margin-bottom: 5px;
+}
+
+.growth {
+    color: #b0b0d0;
+} 

@@ -4,7 +4,7 @@ import avatar1 from "../../assets/avatar john doe.png";
 import avatar2 from "../../assets/avatar marry jane.png";
 import avatar3 from "../../assets/avatar dr auzio.png";
 
-export default function Cards({ votedCandidate, setVotedCandidate }) {
+export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote }) {
     const candidates = [
         { id: 1, name: "John Doe", img: avatar1 },
         { id: 2, name: "Marry Jane", img: avatar2 },
@@ -13,18 +13,28 @@ export default function Cards({ votedCandidate, setVotedCandidate }) {
 
     const handleVote = (id) => {
         const selected = candidates.find((c) => c.id === id);
-        setVotedCandidate(selected);
+        if (selected) {
+            setVotedCandidate(selected);
+        }
     };
 
     const clearVote = () => {
         setVotedCandidate(null);
     };
 
+    const handleConfirmClick = () => {
+        if (onConfirmVote) {
+            onConfirmVote();
+        }
+    };
+
     let orderedCandidates = [...candidates];
     if (votedCandidate) {
         const voted = orderedCandidates.find((c) => c.id === votedCandidate.id);
-        const others = orderedCandidates.filter((c) => c.id !== votedCandidate.id);
-        orderedCandidates = [others[0], voted, others[1]];
+        if (voted) {
+            const others = orderedCandidates.filter((c) => c.id !== votedCandidate.id);
+            orderedCandidates = [others[0], voted, others[1]];
+        }
     }
 
     return (
@@ -48,11 +58,17 @@ export default function Cards({ votedCandidate, setVotedCandidate }) {
                         <span className="profileName">{candidate.name}</span>
                         <button
                             className="voteButton"
-                            onClick={() => handleVote(candidate.id)}
+                            onClick={() => {
+                                if (votedCandidate?.id === candidate.id) {
+                                    handleConfirmClick();
+                                } else {
+                                    handleVote(candidate.id);
+                                }
+                            }}
                         >
                             <p>
                                 {votedCandidate?.id === candidate.id
-                                    ? "Confirmo meu voto"
+                                    ? "Confirmo"
                                     : "votar"}
                             </p>
                         </button>
