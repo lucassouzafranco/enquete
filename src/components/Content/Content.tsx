@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Content.css";
 import Cards from "../Cards/Cards";
+import { setUserVotedCandidate } from "../../socket/processMessage.js";
 
 export default function Content() {
     const [votedCandidate, setVotedCandidate] = useState(null);
@@ -15,6 +16,10 @@ export default function Content() {
         if (votedCandidate) {
             // Salvar o candidato votado no localStorage para persistir entre páginas
             localStorage.setItem('votedCandidate', JSON.stringify(votedCandidate));
+            
+            // Registrar o candidato votado no sistema WebSocket
+            setUserVotedCandidate(votedCandidate);
+            
             navigate('/dashboard');
         }
     };
