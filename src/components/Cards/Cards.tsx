@@ -1,7 +1,7 @@
 import React from "react";
 import "./Cards.css";
 import romario from "../../assets/romario.jpg";
-import damaso from "../../assets/damaso.jpg";
+import damaso from "../../assets/damaso.jpeg";
 import pastormirim from "../../assets/pastormirim.jpeg";
 import tiririca from "../../assets/tiririca.jpeg";
 import manga from "../../assets/manga.png";
