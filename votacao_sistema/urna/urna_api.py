@@ -55,7 +55,7 @@ def submit_data():
             ]
         }
 
-        publish_message('queue_agregador', json.dumps(result))
+        publish_message(json.dumps(result))
         return jsonify({"status": "Message sent to RabbitMQ", "data": result}), 200
 
     except Exception as e:
