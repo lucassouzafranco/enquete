@@ -4,17 +4,17 @@
     align-items: center;
     height: 50vh;
     justify-content: center;
-    gap: 8em;
-    flex-wrap: wrap;
+    gap: 2em;
+    flex-wrap: nowrap;
     padding: 0 2em;
 }
 
 .card {
     background-color: #1C1E20;
     height: 76%;
-    width: 200px;
-    min-width: 180px;
-    max-width: 250px;
+    width: 180px;
+    min-width: 160px;
+    max-width: 220px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -39,6 +39,11 @@
     font-size: 1.3em;
     font-weight: 600;
     margin-top: 0.5em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
 }
 
 .card button {
@@ -68,9 +73,9 @@
 }
 
 .selectedCard {
-    width: 250px;
-    min-width: 220px;
-    max-width: 300px;
+    width: 220px;
+    min-width: 200px;
+    max-width: 280px;
     height: 82%;
     transition: all 0.8s ease;
     z-index: 20;
@@ -80,6 +85,11 @@
 .selectedCard .profileName {
     font-size: 1.6em;
     font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
 }
 
 .selectedCard .voteButton {
@@ -118,10 +128,36 @@
 }
 
 /* Media queries para telas menores */
+@media (max-width: 1200px) {
+    .cardsWrapper {
+        gap: 1.5em;
+        padding: 0 1em;
+    }
+    
+    .card {
+        width: 160px;
+        min-width: 140px;
+    }
+    
+    .selectedCard {
+        width: 200px;
+        min-width: 180px;
+    }
+    
+    .card .profileName {
+        font-size: 1.1em;
+    }
+    
+    .selectedCard .profileName {
+        font-size: 1.4em;
+    }
+}
+
 @media (max-width: 768px) {
     .cardsWrapper {
-        gap: 2em;
+        gap: 1em;
         padding: 0 1em;
+        flex-wrap: wrap;
     }
     
     .card {
@@ -143,6 +179,14 @@
     .selectedCard .voteButton p {
         font-size: 0.95em;
     }
+    
+    .card .profileName {
+        font-size: 1em;
+    }
+    
+    .selectedCard .profileName {
+        font-size: 1.2em;
+    }
 }
 
 @media (max-width: 480px) {
@@ -163,5 +207,13 @@
     .selectedCard {
         width: 180px;
         min-width: 160px;
+    }
+    
+    .card .profileName {
+        font-size: 0.9em;
+    }
+    
+    .selectedCard .profileName {
+        font-size: 1.1em;
     }
 }

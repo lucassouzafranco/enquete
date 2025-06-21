@@ -3,17 +3,18 @@ import './GraphCard.css';
 
 export default function GraphCard() {
   const candidates = [
-    { name: 'Marry Jane', percentage: 13, color: '#ff8fab', trend: 'up' },
-    { name: 'John Doe', percentage: 31, color: '#f9d479', trend: 'up' },
-    { name: 'Dr. Auzio', percentage: 56, color: '#82c7e2', trend: 'down' },
+    { name: 'Romário', percentage: 13, color: '#ff8fab', trend: 'up' },
+    { name: 'Prefeito de Sorocaba', percentage: 31, color: '#f9d479', trend: 'up' },
+    { name: 'Pastor Mirim', percentage: 56, color: '#82c7e2', trend: 'down' },
+    { name: 'Pedro Damaso', percentage: 8, color: '#a8e6cf', trend: 'up' },
+    { name: 'Tiririca', percentage: 12, color: '#ffb3ba', trend: 'down' }, 
   ];
 
   return (
     <div className="graphCard">
       <div className="graphHeader">
-        <h2>Visualização de Dados em Tempo Real</h2>
-        <span className="liveBadge">live</span>
       </div>
+      <span className="liveBadge"></span>
       <div className="graphContent">
         {candidates.map((candidate) => (
           <div className="candidateBar" key={candidate.name}>

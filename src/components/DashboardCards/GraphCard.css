@@ -3,17 +3,18 @@
     height: 400px;
     background-color: #1C1E20;
     border-radius: 20px;
-    padding: 30px;
+    padding: 20px 30px 30px 30px;
     box-sizing: border-box;
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 
 .graphHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .graphHeader h2 {
@@ -26,17 +27,30 @@
 .liveBadge {
     background-color: #db4040;
     color: white;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    animation: blink 4s infinite;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 0.8;
+        background-color: #db4040;
+    }
+    25%, 75% {
+        opacity: 0.3;
+        background-color: #ff6b6b;
+    }
 }
 
 .graphContent {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
 }
 
 .candidateBar {

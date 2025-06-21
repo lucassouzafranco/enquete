@@ -1,14 +1,18 @@
 import React from "react";
 import "./Cards.css";
-import avatar1 from "../../assets/avatar john doe.png";
-import avatar2 from "../../assets/avatar marry jane.png";
-import avatar3 from "../../assets/avatar dr auzio.png";
+import romario from "../../assets/romario.jpg";
+import damaso from "../../assets/damaso.jpg";
+import pastormirim from "../../assets/pastormirim.jpeg";
+import tiririca from "../../assets/tiririca.jpeg";
+import manga from "../../assets/manga.png";
 
 export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote }) {
     const candidates = [
-        { id: 1, name: "John Doe", img: avatar1 },
-        { id: 2, name: "Marry Jane", img: avatar2 },
-        { id: 3, name: "Dr. Auzio", img: avatar3 },
+        { id: 1, name: "Romário", img: romario },
+        { id: 2, name: "Prefeito de Sorocaba", img: manga },
+        { id: 3, name: "Pastor Mirim", img: pastormirim },
+        { id: 4, name: "Pedro Damaso", img: damaso },
+        { id: 5, name: "Tiririca", img: tiririca },
     ];
 
     const handleVote = (id) => {
@@ -33,7 +37,9 @@ export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote
         const voted = orderedCandidates.find((c) => c.id === votedCandidate.id);
         if (voted) {
             const others = orderedCandidates.filter((c) => c.id !== votedCandidate.id);
-            orderedCandidates = [others[0], voted, others[1]];
+            const leftSide = others.slice(0, 2);
+            const rightSide = others.slice(2, 4);
+            orderedCandidates = [...leftSide, voted, ...rightSide];
         }
     }
 
