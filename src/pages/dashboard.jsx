@@ -11,6 +11,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Tenta carregar o candidato votado do localStorage
     const savedCandidate = localStorage.getItem('votedCandidate');
     if (savedCandidate) {
       setVotedCandidate(JSON.parse(savedCandidate));
@@ -18,6 +19,7 @@ export default function Dashboard() {
   }, []);
 
   const handleReturnToHome = () => {
+    // Limpa o voto ao retornar para a página inicial
     localStorage.removeItem('votedCandidate');
     navigate('/');
   };
@@ -28,12 +30,14 @@ export default function Dashboard() {
       <div className="dashboardContent">
         <h1>Você votou! Aqui estão dados sobre os candidatos</h1>
         <div className="cardsContainer">
-          <VotedCard votedCandidate={votedCandidate} />
+          {votedCandidate && <VotedCard votedCandidate={votedCandidate} />}
           <GraphCard />
         </div>
-        <button className="returnButton" onClick={handleReturnToHome}>
-          retornar ao início
-        </button>
+        <div className="dashboardActions">
+          <button className="returnButton" onClick={handleReturnToHome}>
+            retornar ao início
+          </button>
+        </div>
       </div>
       <Footer />
     </div>

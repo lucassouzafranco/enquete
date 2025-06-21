@@ -1,18 +1,13 @@
 import React from "react";
 import "./Cards.css";
-import romario from "../../assets/romario.jpg";
-import damaso from "../../assets/damaso.jpeg";
-import pastormirim from "../../assets/pastormirim.jpeg";
-import tiririca from "../../assets/tiririca.jpeg";
-import manga from "../../assets/manga.png";
 
 export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote }) {
     const candidates = [
-        { id: 1, name: "Romário", img: romario },
-        { id: 2, name: "Prefeito de Sorocaba", img: manga },
-        { id: 3, name: "Pastor Mirim", img: pastormirim },
-        { id: 4, name: "Pedro Damaso", img: damaso },
-        { id: 5, name: "Tiririca", img: tiririca },
+        { id: 1, name: "Bulbasauro", img: "https://projectpokemon.org/images/normal-sprite/bulbasaur.gif" },
+        { id: 2, name: "Pikachu", img: "https://projectpokemon.org/images/normal-sprite/pikachu.gif" },
+        { id: 3, name: "Charmander", img: "https://projectpokemon.org/images/normal-sprite/charmander.gif" },
+        { id: 4, name: "Squirtle", img: "https://projectpokemon.org/images/normal-sprite/squirtle.gif" },
+        { id: 5, name: "Eevee", img: "https://projectpokemon.org/images/normal-sprite/eevee.gif" },
     ];
 
     const handleVote = (id) => {
@@ -56,11 +51,13 @@ export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote
                             ${votedCandidate && votedCandidate.id === candidate.id ? "selectedCard" : ""}
                         `}
                     >
-                        <img
-                            src={candidate.img}
-                            alt={`${candidate.name} image`}
-                            className="avatarImage"
-                        />
+                        <div className="avatarImageContainer">
+                            <img
+                                src={candidate.img}
+                                alt={`${candidate.name} image`}
+                                className="avatarImage"
+                            />
+                        </div>
                         <span className="profileName">{candidate.name}</span>
                         <button
                             className="voteButton"

@@ -5,11 +5,11 @@ import wsClient from '../../socket/wsclient.js';
 
 export default function GraphCard() {
   const [candidates, setCandidates] = useState([
-    { name: 'Romário', percentage: 0, color: '#ff8fab', trend: 'up' },
-    { name: 'Prefeito de Sorocaba', percentage: 0, color: '#f9d479', trend: 'up' },
-    { name: 'Pastor Mirim', percentage: 0, color: '#82c7e2', trend: 'down' },
-    { name: 'Pedro Damaso', percentage: 0, color: '#a8e6cf', trend: 'up' },
-    { name: 'Tiririca', percentage: 0, color: '#ffb3ba', trend: 'down' },
+    { name: 'Bulbasauro', percentage: 0, color: '#4ade80', trend: 'up' },
+    { name: 'Pikachu', percentage: 0, color: '#fbbf24', trend: 'up' },
+    { name: 'Charmander', percentage: 0, color: '#f87171', trend: 'down' },
+    { name: 'Squirtle', percentage: 0, color: '#60a5fa', trend: 'up' },
+    { name: 'Eevee', percentage: 0, color: '#a0522d', trend: 'down' },
   ]);
 
   const [totalVotes, setTotalVotes] = useState(0);

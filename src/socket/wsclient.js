@@ -151,9 +151,9 @@ class WebSocketClient {
             case 'aggregated':
                 testMessage = {
                     candidates: [
-                        {"name": "Romário", "votes": 150, "percentage": 31.7},
-                        {"name": "João Silva", "votes": 89, "percentage": 18.8},
-                        {"name": "Maria Santos", "votes": 234, "percentage": 49.5}
+                        {"name": "Pikachu", "votes": 150, "percentage": 31.7},
+                        {"name": "Bulbasauro", "votes": 89, "percentage": 18.8},
+                        {"name": "Charmander", "votes": 234, "percentage": 49.5}
                     ],
                     totalVotes: 473,
                     timestamp: new Date().toISOString()
@@ -163,7 +163,7 @@ class WebSocketClient {
             case 'vote_update':
                 testMessage = {
                     type: "vote_update",
-                    candidate: "Romário",
+                    candidate: "Pikachu",
                     newVotes: 151,
                     increment: 1,
                     timestamp: new Date().toISOString()
@@ -208,7 +208,7 @@ class WebSocketClient {
     }
 
     // Função de teste para simular mensagem de voto
-    testVote(candidateName = 'Romário', votes = 10) {
+    testVote(candidateName = 'Pikachu', votes = 10) {
         console.log(`🧪 Teste: Simulando voto para ${candidateName} (+${votes} votos)`);
         const testMessage = {
             type: 'Iot',

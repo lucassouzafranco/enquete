@@ -10,7 +10,7 @@ export default function Content() {
 
     const titleText = votedCandidate
         ? `Confirmação do Voto`
-        : "Escolha o seu candidato(a) favorito(a)";
+        : "Escolha o seu pokemon favorito(a)";
 
     const handleConfirmVote = () => {
         if (votedCandidate) {
