@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-#Fiz esse script só pra testar o envio do core_connection e afins
+#Fiz esse script só pra testar o envio do core
 app = Flask(__name__)
 
 @app.route('/push', methods=['POST'])
