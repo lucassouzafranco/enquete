@@ -1,9 +1,12 @@
+import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 import { processMessage } from './processMessage.js';
 
 class WebSocketClient {
     constructor() {
-        this.url = 'ws://localhost:5000/ws';
-        this.socket = null;
+        this.url = 'https://agregador-node.onrender.com/ws';
+        this.topic = '/topic/aggregated';
+        this.client = null;
         this._isConnected = false;
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = Infinity; // Tentativas infinitas
@@ -14,40 +17,78 @@ class WebSocketClient {
 
     connect() {
         try {
-            console.log('Conectando ao WebSocket:', this.url);
-            this.socket = new WebSocket(this.url);
+            console.log('Conectando ao WebSocket via SockJS:', this.url);
+            
+            this.client = new Client({
+                webSocketFactory: () => new SockJS(this.url),
+                debug: (str) => {
+                    console.log('STOMP Debug:', str);
+                },
+                reconnectDelay: 5000,
+                heartbeatIncoming: 4000,
+                heartbeatOutgoing: 4000,
+            });
 
-            this.socket.onopen = () => {
-                console.log('WebSocket conectado com sucesso!');
+            this.client.onConnect = (frame) => {
+                console.log('SockJS/STOMP conectado com sucesso!', frame);
                 this._isConnected = true;
                 this.reconnectAttempts = 0;
                 this.currentDelay = this.baseDelay; // Reset do delay
+                
+                // Inscrever no tópico
+                this.subscribe();
             };
 
-            this.socket.onmessage = (event) => {
-                try {
-                    const data = JSON.parse(event.data);
-                    console.log('Mensagem recebida:', data);
-                    processMessage(data);
-                } catch (error) {
-                    console.error('Erro ao processar mensagem:', error);
-                }
+            this.client.onStompError = (frame) => {
+                console.error('Erro STOMP:', frame);
+                this._isConnected = false;
             };
 
-            this.socket.onclose = (event) => {
-                console.log('WebSocket desconectado:', event.code, event.reason);
+            this.client.onWebSocketError = (error) => {
+                console.error('Erro WebSocket:', error);
+                this._isConnected = false;
+            };
+
+            this.client.onWebSocketClose = () => {
+                console.log('Conexão WebSocket fechada');
                 this._isConnected = false;
                 this.handleReconnect();
             };
 
-            this.socket.onerror = (error) => {
-                console.error('Erro no WebSocket:', error);
-                this._isConnected = false;
-            };
+            this.client.activate();
 
         } catch (error) {
-            console.error('Erro ao conectar WebSocket:', error);
+            console.error('Erro ao conectar SockJS:', error);
             this.handleReconnect();
+        }
+    }
+
+    subscribe() {
+        if (this.client && this.client.connected) {
+            console.log('Inscrevendo no tópico:', this.topic);
+            
+            this.client.subscribe(this.topic, (message) => {
+                try {
+                    console.log('📨 === MENSAGEM RECEBIDA ===');
+                    console.log('📋 Headers:', message.headers);
+                    console.log('📄 Body (raw):', message.body);
+                    console.log('🏷️  Destination:', message.destination);
+                    console.log('🆔 Message ID:', message.headers['message-id'] || 'N/A');
+                    
+                    const data = JSON.parse(message.body);
+                    console.log('📊 Dados parseados:', data);
+                    console.log('📊 Tipo de dados:', typeof data);
+                    console.log('📊 Estrutura:', Object.keys(data));
+                    console.log('========================');
+                    
+                    processMessage(data);
+                } catch (error) {
+                    console.error('❌ Erro ao processar mensagem:', error);
+                    console.error('📄 Conteúdo da mensagem:', message.body);
+                }
+            });
+            
+            console.log('✅ Inscrição realizada com sucesso! Aguardando mensagens...');
         }
     }
 
@@ -70,18 +111,21 @@ class WebSocketClient {
     }
 
     disconnect() {
-        if (this.socket) {
-            this.socket.close();
-            this.socket = null;
+        if (this.client) {
+            this.client.deactivate();
+            this.client = null;
             this._isConnected = false;
         }
     }
 
     send(message) {
-        if (this.socket && this._isConnected) {
-            this.socket.send(JSON.stringify(message));
+        if (this.client && this.client.connected) {
+            this.client.publish({
+                destination: '/app/message',
+                body: JSON.stringify(message)
+            });
         } else {
-            console.warn('WebSocket não está conectado');
+            console.warn('SockJS não está conectado');
         }
     }
 
@@ -98,8 +142,60 @@ class WebSocketClient {
         return {
             attempts: this.reconnectAttempts,
             currentDelay: this.currentDelay,
-            isConnected: this._isConnected
+            isConnected: this._isConnected,
+            url: this.url,
+            topic: this.topic
         };
+    }
+
+    // Função de teste para simular mensagem do servidor
+    testServerMessage(messageType = 'aggregated') {
+        console.log(`🧪 Teste: Simulando mensagem do servidor (tipo: ${messageType})`);
+        
+        let testMessage;
+        
+        switch(messageType) {
+            case 'aggregated':
+                testMessage = {
+                    candidates: [
+                        {"name": "Romário", "votes": 150, "percentage": 31.7},
+                        {"name": "João Silva", "votes": 89, "percentage": 18.8},
+                        {"name": "Maria Santos", "votes": 234, "percentage": 49.5}
+                    ],
+                    totalVotes: 473,
+                    timestamp: new Date().toISOString()
+                };
+                break;
+                
+            case 'vote_update':
+                testMessage = {
+                    type: "vote_update",
+                    candidate: "Romário",
+                    newVotes: 151,
+                    increment: 1,
+                    timestamp: new Date().toISOString()
+                };
+                break;
+                
+            case 'stats':
+                testMessage = {
+                    type: "stats",
+                    totalVoters: 1200,
+                    participation: 85.2,
+                    lastUpdate: new Date().toISOString()
+                };
+                break;
+                
+            default:
+                testMessage = {
+                    message: "Mensagem de teste padrão",
+                    timestamp: new Date().toISOString()
+                };
+        }
+        
+        console.log('📨 Mensagem de teste:', testMessage);
+        processMessage(testMessage);
+        console.log('✅ Mensagem processada! Verifique o dashboard');
     }
 
     // Função de teste para simular conexão
@@ -144,6 +240,7 @@ window.testWebSocket = {
     connect: () => wsClient.testConnect(),
     disconnect: () => wsClient.testDisconnect(),
     vote: (candidate, votes) => wsClient.testVote(candidate, votes),
+    serverMessage: (type) => wsClient.testServerMessage(type),
     status: () => wsClient.isConnected(),
     info: () => wsClient.getReconnectInfo()
 };
