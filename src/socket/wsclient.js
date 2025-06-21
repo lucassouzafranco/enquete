@@ -4,7 +4,7 @@ class WebSocketClient {
     constructor() {
         this.url = 'ws://localhost:5000/ws';
         this.socket = null;
-        this.isConnected = false;
+        this._isConnected = false;
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = Infinity; // Tentativas infinitas
         this.baseDelay = 1000; // 1 segundo inicial
@@ -19,7 +19,7 @@ class WebSocketClient {
 
             this.socket.onopen = () => {
                 console.log('WebSocket conectado com sucesso!');
-                this.isConnected = true;
+                this._isConnected = true;
                 this.reconnectAttempts = 0;
                 this.currentDelay = this.baseDelay; // Reset do delay
             };
@@ -36,13 +36,13 @@ class WebSocketClient {
 
             this.socket.onclose = (event) => {
                 console.log('WebSocket desconectado:', event.code, event.reason);
-                this.isConnected = false;
+                this._isConnected = false;
                 this.handleReconnect();
             };
 
             this.socket.onerror = (error) => {
                 console.error('Erro no WebSocket:', error);
-                this.isConnected = false;
+                this._isConnected = false;
             };
 
         } catch (error) {
@@ -73,12 +73,12 @@ class WebSocketClient {
         if (this.socket) {
             this.socket.close();
             this.socket = null;
-            this.isConnected = false;
+            this._isConnected = false;
         }
     }
 
     send(message) {
-        if (this.socket && this.isConnected) {
+        if (this.socket && this._isConnected) {
             this.socket.send(JSON.stringify(message));
         } else {
             console.warn('WebSocket não está conectado');
@@ -86,15 +86,50 @@ class WebSocketClient {
     }
 
     getConnectionStatus() {
-        return this.isConnected;
+        return this._isConnected;
+    }
+
+    // Função simples que retorna true ou false
+    isConnected() {
+        return this._isConnected;
     }
 
     getReconnectInfo() {
         return {
             attempts: this.reconnectAttempts,
             currentDelay: this.currentDelay,
-            isConnected: this.isConnected
+            isConnected: this._isConnected
         };
+    }
+
+    // Função de teste para simular conexão
+    testConnect() {
+        console.log('🧪 Teste: Simulando conexão...');
+        this._isConnected = true;
+        console.log('✅ Status de conexão definido como TRUE');
+        console.log('📊 Verifique o dashboard para ver "CONECTADO"');
+    }
+
+    // Função de teste para simular desconexão
+    testDisconnect() {
+        console.log('🧪 Teste: Simulando desconexão...');
+        this._isConnected = false;
+        console.log('❌ Status de conexão definido como FALSE');
+        console.log('📊 Verifique o dashboard para ver "DESCONECTADO"');
+    }
+
+    // Função de teste para simular mensagem de voto
+    testVote(candidateName = 'Romário', votes = 10) {
+        console.log(`🧪 Teste: Simulando voto para ${candidateName} (+${votes} votos)`);
+        const testMessage = {
+            type: 'Iot',
+            token: 'test-token',
+            object: candidateName,
+            valor: votes
+        };
+        console.log('📨 Mensagem de teste:', testMessage);
+        processMessage(testMessage);
+        console.log('✅ Voto processado! Verifique o dashboard');
     }
 }
 
@@ -103,5 +138,14 @@ const wsClient = new WebSocketClient();
 
 // Conectar automaticamente quando o módulo for carregado
 wsClient.connect();
+
+// Expor funções de teste globalmente para uso no console
+window.testWebSocket = {
+    connect: () => wsClient.testConnect(),
+    disconnect: () => wsClient.testDisconnect(),
+    vote: (candidate, votes) => wsClient.testVote(candidate, votes),
+    status: () => wsClient.isConnected(),
+    info: () => wsClient.getReconnectInfo()
+};
 
 export default wsClient;

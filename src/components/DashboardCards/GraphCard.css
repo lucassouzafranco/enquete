@@ -8,13 +8,14 @@
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    overflow: hidden;
 }
 
 .graphHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
 }
 
 .graphHeader h2 {
@@ -24,27 +25,51 @@
     color: #FFFFFF;
 }
 
-.liveBadge {
-    background-color: #db4040;
-    color: white;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
+.connectionStatus {
     position: absolute;
     top: 20px;
     right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    background-color: #1C1E20;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.liveBadge {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.liveBadge.connected {
+    background-color: #db4040;
     animation: blink 4s infinite;
 }
 
-@keyframes blink {
-    0%, 50% {
-        opacity: 0.8;
-        background-color: #db4040;
-    }
-    25%, 75% {
-        opacity: 0.3;
-        background-color: #ff6b6b;
-    }
+.liveBadge.disconnected {
+    background-color: #666666;
+    border: 2px solid #999999;
+}
+
+.connectedText {
+    color: #db4040;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.disconnectedText {
+    color: #999999;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .graphContent {
@@ -72,6 +97,7 @@
     border-radius: 10px;
     overflow: visible;
     position: relative;
+    margin-right: 80px;
 }
 
 .progressBar {
@@ -85,11 +111,12 @@
 
 .percentageText {
     position: absolute;
-    left: calc(100% + 8px);
+    right: -80px;
     font-size: 22px;
     font-weight: 600;
     z-index: 2;
     white-space: nowrap;
+    color: #FFFFFF;
 }
 
 .candidatePercentage {
@@ -102,9 +129,28 @@
     color: #FFFFFF;
 }
 
+.trendUp {
+    color: #4caf50;
+}
+
+.trendDown {
+    color: #f44336;
+}
+
 .graphFooter {
     margin-top: 30px;
     text-align: left;
     font-size: 14px;
     color: #b0b0d0;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 0.8;
+        background-color: #db4040;
+    }
+    25%, 75% {
+        opacity: 0.3;
+        background-color: #ff6b6b;
+    }
 } 

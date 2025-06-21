@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './GraphCard.css';
 import { setUpdateUICallback, calculatePercentages, getTotalVotes } from '../../socket/processMessage.js';
+import wsClient from '../../socket/wsclient.js';
 
 export default function GraphCard() {
   const [candidates, setCandidates] = useState([
@@ -12,6 +13,7 @@ export default function GraphCard() {
   ]);
 
   const [totalVotes, setTotalVotes] = useState(0);
+  const [isConnected, setIsConnected] = useState(false);
 
   // Função para atualizar a UI com novos dados
   const updateUI = (voteData) => {
@@ -34,13 +36,32 @@ export default function GraphCard() {
     
     // Atualização inicial
     updateUI();
+    
+    // Verificar status da conexão a cada segundo
+    const checkConnection = () => {
+      setIsConnected(wsClient.isConnected());
+    };
+    
+    checkConnection();
+    const connectionInterval = setInterval(checkConnection, 1000);
+
+    return () => {
+      clearInterval(connectionInterval);
+    };
   }, []);
 
   return (
     <div className="graphCard">
       <div className="graphHeader">
       </div>
-      <span className="liveBadge"></span>
+      <div className="connectionStatus">
+        <span className={`liveBadge ${isConnected ? 'connected' : 'disconnected'}`}></span>
+        {isConnected ? (
+          <span className="connectedText">Conectado</span>
+        ) : (
+          <span className="disconnectedText">Desconectado</span>
+        )}
+      </div>
       <div className="graphContent">
         {candidates.map((candidate) => (
           <div className="candidateBar" key={candidate.name}>
