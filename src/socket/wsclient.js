@@ -70,15 +70,9 @@ class WebSocketClient {
             this.client.subscribe(this.topic, (message) => {
                 try {
                     console.log('📨 === MENSAGEM RECEBIDA ===');
-                    console.log('📋 Headers:', message.headers);
-                    console.log('📄 Body (raw):', message.body);
-                    console.log('🏷️  Destination:', message.destination);
-                    console.log('🆔 Message ID:', message.headers['message-id'] || 'N/A');
-                    
+                    console.log('Headers:', message.headers);                    
                     const data = JSON.parse(message.body);
-                    console.log('📊 Dados parseados:', data);
-                    console.log('📊 Tipo de dados:', typeof data);
-                    console.log('📊 Estrutura:', Object.keys(data));
+                    console.log(' Dados parseados:', data);
                     console.log('========================');
                     
                     processMessage(data);
@@ -94,8 +88,7 @@ class WebSocketClient {
 
     handleReconnect() {
         this.reconnectAttempts++;
-        
-        // Calcular delay com backoff exponencial
+      
         if (this.currentDelay < this.maxDelay) {
             // Dobra o delay até atingir o máximo
             this.currentDelay = Math.min(this.currentDelay * 2, this.maxDelay);

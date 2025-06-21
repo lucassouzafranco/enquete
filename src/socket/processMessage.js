@@ -23,12 +23,31 @@ let userVotedCandidate = null;
 
 export function processMessage(data) {
     try {
-        if (data.type === 'Iot' && data.object && data.valor !== undefined) {
-            const candidate = objectToCandidate[data.object];
-            
-            if (candidate) {
-                voteData[candidate] += data.valor;
-                console.log(`Voto recebido para ${candidate}: +${data.valor} (Total: ${voteData[candidate]})`);
+        // Novo formato: processa uma lista de votos agregados
+        if ((data.type === 'voto') && Array.isArray(data.lista)) {
+            console.log('Recebida lista de votos agregados. Processando...');
+            let hasChanges = false;
+
+            data.lista.forEach(item => {
+                const candidateName = item.objectIdentifier;
+                const newTotalVotes = item.somatorio;
+
+                // Verifica se o candidato existe no nosso sistema
+                if (voteData.hasOwnProperty(candidateName)) {
+                    // Verifica se o total de votos realmente mudou
+                    if (voteData[candidateName] !== newTotalVotes) {
+                        console.log(`Atualizando votos para ${candidateName}: de ${voteData[candidateName]} para ${newTotalVotes}`);
+                        voteData[candidateName] = newTotalVotes;
+                        hasChanges = true;
+                    }
+                } else {
+                    console.warn(`Candidato da lista não encontrado no sistema: '${candidateName}'`);
+                }
+            });
+
+            // Se houveram mudanças, atualiza a UI
+            if (hasChanges) {
+                console.log('Dados de votação atualizados:', voteData);
                 if (updateUICallback) {
                     updateUICallback(voteData);
                 }
@@ -36,10 +55,28 @@ export function processMessage(data) {
                     updateVotedCardCallback(userVotedCandidate, voteData);
                 }
             } else {
-                console.warn('Candidato não encontrado:', data.object);
+                console.log('Nenhuma mudança detectada nos totais de votos.');
+            }
+
+        } 
+        // Mantém o formato antigo para compatibilidade com testes
+        else if (data.type === 'Iot' && data.object && data.valor !== undefined) {
+            const candidate = objectToCandidate[data.object];
+            
+            if (candidate) {
+                voteData[candidate] += data.valor;
+                console.log(`Voto (incremental de teste) recebido para ${candidate}: +${data.valor} (Total: ${voteData[candidate]})`);
+                if (updateUICallback) {
+                    updateUICallback(voteData);
+                }
+                if (updateVotedCardCallback && userVotedCandidate) {
+                    updateVotedCardCallback(userVotedCandidate, voteData);
+                }
+            } else {
+                console.warn('Candidato de teste não encontrado:', data.object);
             }
         } else {
-            console.log('Mensagem recebida (não é voto):', data);
+            console.log('Mensagem recebida (formato não reconhecido):', data);
         }
     } catch (error) {
         console.error('Erro ao processar mensagem:', error);
