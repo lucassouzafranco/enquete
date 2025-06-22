@@ -18,8 +18,8 @@ export const getPokemonAudioUrl = (pokemonName) => {
         return null;
     }
     
-    // Retorna o caminho para o arquivo local
-    return `/src/sounds/${pokemonId}.mp3`;
+    // Retorna o caminho para o arquivo local na pasta public
+    return `/sounds/${pokemonId}.mp3`;
 };
 
 // Função para carregar e tocar o áudio de um Pokémon

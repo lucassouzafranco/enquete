@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// Em desenvolvimento usa o proxy do Vite, em produção usa a API route do Vercel
+const baseURL = import.meta.env.DEV 
+  ? '/api' 
+  : '/api'; // API routes do Vercel
+
 const api = axios.create({
-  baseURL: import.meta.env.DEV ? '/api' : 'http://45.178.181.60:5000',
+  baseURL: baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

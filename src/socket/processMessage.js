@@ -158,10 +158,60 @@ export function setUserVotedCandidate(candidate) {
 
 // Função para inicializar os dados do localStorage
 export function initializeVoteData() {
-    const savedData = loadVoteData();
-    if (savedData) {
-        voteData = { ...savedData };
-        console.log('Dados de votação inicializados do localStorage:', voteData);
+    try {
+        console.log('Inicializando dados de votação...');
+        const savedData = loadVoteData();
+        
+        if (savedData && typeof savedData === 'object') {
+            // Verifica se todos os Pokémon estão presentes
+            const requiredPokemon = ['Bulbasauro', 'Pikachu', 'Charmander', 'Squirtle', 'Eevee'];
+            const hasAllPokemon = requiredPokemon.every(pokemon => 
+                savedData.hasOwnProperty(pokemon) && typeof savedData[pokemon] === 'number'
+            );
+            
+            if (hasAllPokemon) {
+                voteData = { ...savedData };
+                console.log('Dados de votação inicializados do localStorage:', voteData);
+                
+                // Força atualização da UI se houver callbacks configurados
+                if (updateUICallback) {
+                    console.log('Forçando atualização da UI com dados carregados');
+                    updateUICallback(voteData);
+                }
+                
+                return true;
+            } else {
+                console.warn('Dados salvos incompletos, usando dados padrão');
+            }
+        } else {
+            console.log('Nenhum dado salvo encontrado, usando dados padrão');
+        }
+        
+        // Usa dados padrão se não houver dados válidos
+        voteData = {
+            'Bulbasauro': 0,
+            'Pikachu': 0,
+            'Charmander': 0,
+            'Squirtle': 0,
+            'Eevee': 0
+        };
+        
+        console.log('Dados de votação inicializados com valores padrão:', voteData);
+        return false;
+        
+    } catch (error) {
+        console.error('Erro ao inicializar dados de votação:', error);
+        
+        // Em caso de erro, usa dados padrão
+        voteData = {
+            'Bulbasauro': 0,
+            'Pikachu': 0,
+            'Charmander': 0,
+            'Squirtle': 0,
+            'Eevee': 0
+        };
+        
+        return false;
     }
 }
 
