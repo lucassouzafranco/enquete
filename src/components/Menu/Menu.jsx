@@ -7,4 +7,4 @@ export default function Menu() {
       <h4>Votação Pokemons Primeira Geração ™</h4>
     </div>
   );
-}
+} 

@@ -2,20 +2,7 @@ import React from "react";
 import "./Cards.css";
 import { playPokemonAudio, preloadAllPokemonAudio } from "../../service/pokemonAudio.js";
 
-interface Candidate {
-    id: number;
-    name: string;
-    img: string;
-}
-
-interface CardsProps {
-    votedCandidate: Candidate | null;
-    setVotedCandidate: (candidate: Candidate | null) => void;
-    onConfirmVote: () => void;
-    isSubmitting?: boolean;
-}
-
-export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote, isSubmitting = false }: CardsProps) {
+export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote, isSubmitting = false }) {
     const candidates = [
         { id: 1, name: "Bulbasauro", img: "https://projectpokemon.org/images/normal-sprite/bulbasaur.gif" },
         { id: 2, name: "Pikachu", img: "https://projectpokemon.org/images/normal-sprite/pikachu.gif" },
@@ -46,7 +33,7 @@ export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote
         }
     };
 
-    const handleClick = (candidate: Candidate) => {
+    const handleClick = (candidate) => {
         // Executa a lógica de voto
         if (votedCandidate?.id === candidate.id) {
             // Toca o áudio apenas quando for confirmar o voto
@@ -107,4 +94,4 @@ export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote
             </div>
         </div>
     );
-}
+} 

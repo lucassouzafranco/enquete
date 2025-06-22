@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Content.css";
-import Cards from "../Cards/Cards";
+import Cards from "../Cards/Cards.jsx";
 import { setUserVotedCandidate } from "../../socket/processMessage.js";
 import { submitVote, POKEMON_IDS } from "../../service/vote.js";
 
-interface Candidate {
-    id: number;
-    name: string;
-    img: string;
-}
-
 export default function Content() {
-    const [votedCandidate, setVotedCandidate] = useState<Candidate | null>(null);
+    const [votedCandidate, setVotedCandidate] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
@@ -86,4 +80,4 @@ export default function Content() {
             </div>
         </div>
     );
-}
+} 
