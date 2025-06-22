@@ -12,4 +12,13 @@ export default defineConfig({
       'sockjs-client': 'sockjs-client/dist/sockjs.min.js',
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://45.178.181.60:5000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 })

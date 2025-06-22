@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './GraphCard.css';
-import { setUpdateUICallback, calculatePercentages, getTotalVotes } from '../../socket/processMessage.js';
+import { setUpdateUICallback, calculatePercentages, getTotalVotes, getVoteData } from '../../socket/processMessage.js';
 import wsClient from '../../socket/wsclient.js';
 
 export default function GraphCard() {
@@ -34,8 +34,11 @@ export default function GraphCard() {
     // Configurar o callback para atualização da UI
     setUpdateUICallback(updateUI);
     
-    // Atualização inicial
-    updateUI();
+    // Carregar dados iniciais do localStorage
+    const initialData = getVoteData();
+    if (initialData) {
+      updateUI(initialData);
+    }
     
     // Verificar status da conexão a cada segundo
     const checkConnection = () => {

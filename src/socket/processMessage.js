@@ -1,3 +1,5 @@
+import { saveVoteData, loadVoteData } from '../service/localstorage.js';
+
 // Estado global dos votos
 let voteData = {
     'Bulbasauro': 0,
@@ -7,13 +9,13 @@ let voteData = {
     'Eevee': 0
 };
 
-// Mapeamento de objetos para candidatos
-const objectToCandidate = {
-    'Bulbasauro': 'Bulbasauro',
-    'Pikachu': 'Pikachu',
-    'Charmander': 'Charmander',
-    'Squirtle': 'Squirtle',
-    'Eevee': 'Eevee'
+// Mapeamento de nomes da API para nomes do sistema
+const apiToSystemNames = {
+    'bulbasaur': 'Bulbasauro',
+    'pikachu': 'Pikachu',
+    'charmander': 'Charmander',
+    'squirtle': 'Squirtle',
+    'eevee': 'Eevee'
 };
 
 let updateUICallback = null;
@@ -25,35 +27,39 @@ export function processMessage(data) {
     try {
         // Novo formato aninhado
         if (data && Array.isArray(data.dadosAgregados)) {
-            console.log("Recebido 'dadosAgregados'. Procurando por 'votacao_teste_thales'...");
+            console.log("Recebido 'dadosAgregados'. Procurando por 'pokemon'...");
 
-            // Encontra o objeto de votação da nossa enquete
-            const ourPollData = data.dadosAgregados.find(item => item.type === 'votacao_teste_thales');
+            // Encontra o objeto de votação dos Pokémon
+            const pokemonData = data.dadosAgregados.find(item => item.type === 'pokemon');
 
-            if (ourPollData && Array.isArray(ourPollData.lista)) {
-                console.log("Enquete 'votacao_teste_thales' encontrada. Processando a lista de votos...");
+            if (pokemonData && Array.isArray(pokemonData.lista)) {
+                console.log("Dados de Pokémon encontrados. Processando a lista de votos...");
                 let hasChanges = false;
 
-                ourPollData.lista.forEach(item => {
-                    const candidateName = item.objectIdentifier;
+                pokemonData.lista.forEach(item => {
+                    const apiName = item.objectIdentifier;
                     const newTotalVotes = item.somatorio;
+                    const systemName = apiToSystemNames[apiName];
 
-                    // Verifica se o candidato existe no nosso sistema
-                    if (voteData.hasOwnProperty(candidateName)) {
+                    // Verifica se o Pokémon existe no nosso sistema
+                    if (systemName && voteData.hasOwnProperty(systemName)) {
                         // Verifica se o total de votos realmente mudou para evitar re-renderizações desnecessárias
-                        if (voteData[candidateName] !== newTotalVotes) {
-                            console.log(`Atualizando votos para ${candidateName}: de ${voteData[candidateName]} para ${newTotalVotes}`);
-                            voteData[candidateName] = newTotalVotes;
+                        if (voteData[systemName] !== newTotalVotes) {
+                            console.log(`Atualizando votos para ${systemName} (${apiName}): de ${voteData[systemName]} para ${newTotalVotes}`);
+                            voteData[systemName] = newTotalVotes;
                             hasChanges = true;
                         }
                     } else {
-                        // Ignora candidatos que não fazem parte da nossa votação
-                        console.warn(`Candidato da lista ('${candidateName}') não faz parte desta enquete e será ignorado.`);
+                        // Ignora Pokémon que não fazem parte da nossa votação
+                        console.warn(`Pokémon da lista ('${apiName}') não faz parte desta enquete e será ignorado.`);
                     }
                 });
 
                 if (hasChanges) {
                     console.log('Dados de votação atualizados:', voteData);
+                    // Salva os dados no localStorage
+                    saveVoteData(voteData);
+                    
                     if (updateUICallback) {
                         updateUICallback(voteData);
                     }
@@ -61,19 +67,22 @@ export function processMessage(data) {
                         updateVotedCardCallback(userVotedCandidate, voteData);
                     }
                 } else {
-                    console.log('Nenhuma mudança detectada nos totais de votos para "votacao_teste_thales".');
+                    console.log('Nenhuma mudança detectada nos totais de votos para "pokemon".');
                 }
             } else {
-                 console.log("Nenhum dado para a enquete 'votacao_teste_thales' encontrado na mensagem.");
+                 console.log("Nenhum dado para 'pokemon' encontrado na mensagem.");
             }
         }
         // Mantém o formato antigo para compatibilidade com testes manuais
         else if (data.type === 'Iot' && data.object && data.valor !== undefined) {
-            const candidate = objectToCandidate[data.object];
+            const candidate = apiToSystemNames[data.object];
             
             if (candidate) {
                 voteData[candidate] += data.valor;
                 console.log(`Voto (incremental de teste) recebido para ${candidate}: +${data.valor} (Total: ${voteData[candidate]})`);
+                // Salva os dados no localStorage
+                saveVoteData(voteData);
+                
                 if (updateUICallback) {
                     updateUICallback(voteData);
                 }
@@ -81,7 +90,7 @@ export function processMessage(data) {
                     updateVotedCardCallback(userVotedCandidate, voteData);
                 }
             } else {
-                console.warn('Candidato de teste não encontrado:', data.object);
+                console.warn('Pokémon de teste não encontrado:', data.object);
             }
         }
         // Lida com o formato antigo de lista plana
@@ -90,22 +99,26 @@ export function processMessage(data) {
              let hasChanges = false;
  
              data.lista.forEach(item => {
-                 const candidateName = item.objectIdentifier;
+                 const apiName = item.objectIdentifier;
                  const newTotalVotes = item.somatorio;
+                 const systemName = apiToSystemNames[apiName];
  
-                 if (voteData.hasOwnProperty(candidateName)) {
-                     if (voteData[candidateName] !== newTotalVotes) {
-                         console.log(`Atualizando votos para ${candidateName}: de ${voteData[candidateName]} para ${newTotalVotes}`);
-                         voteData[candidateName] = newTotalVotes;
+                 if (systemName && voteData.hasOwnProperty(systemName)) {
+                     if (voteData[systemName] !== newTotalVotes) {
+                         console.log(`Atualizando votos para ${systemName} (${apiName}): de ${voteData[systemName]} para ${newTotalVotes}`);
+                         voteData[systemName] = newTotalVotes;
                          hasChanges = true;
                      }
                  } else {
-                     console.warn(`Candidato da lista não encontrado no sistema: '${candidateName}'`);
+                     console.warn(`Pokémon da lista não encontrado no sistema: '${apiName}'`);
                  }
              });
  
              if (hasChanges) {
                  console.log('Dados de votação atualizados:', voteData);
+                 // Salva os dados no localStorage
+                 saveVoteData(voteData);
+                 
                  if (updateUICallback) {
                      updateUICallback(voteData);
                  }
@@ -140,6 +153,15 @@ export function setUserVotedCandidate(candidate) {
     // Atualizar imediatamente se houver callback
     if (updateVotedCardCallback && candidate) {
         updateVotedCardCallback(candidate, voteData);
+    }
+}
+
+// Função para inicializar os dados do localStorage
+export function initializeVoteData() {
+    const savedData = loadVoteData();
+    if (savedData) {
+        voteData = { ...savedData };
+        console.log('Dados de votação inicializados do localStorage:', voteData);
     }
 }
 

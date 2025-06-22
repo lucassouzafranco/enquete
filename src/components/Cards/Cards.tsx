@@ -1,7 +1,21 @@
 import React from "react";
 import "./Cards.css";
+import { playPokemonAudio, preloadAllPokemonAudio } from "../../service/pokemonAudio.js";
 
-export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote }) {
+interface Candidate {
+    id: number;
+    name: string;
+    img: string;
+}
+
+interface CardsProps {
+    votedCandidate: Candidate | null;
+    setVotedCandidate: (candidate: Candidate | null) => void;
+    onConfirmVote: () => void;
+    isSubmitting?: boolean;
+}
+
+export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote, isSubmitting = false }: CardsProps) {
     const candidates = [
         { id: 1, name: "Bulbasauro", img: "https://projectpokemon.org/images/normal-sprite/bulbasaur.gif" },
         { id: 2, name: "Pikachu", img: "https://projectpokemon.org/images/normal-sprite/pikachu.gif" },
@@ -9,6 +23,11 @@ export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote
         { id: 4, name: "Squirtle", img: "https://projectpokemon.org/images/normal-sprite/squirtle.gif" },
         { id: 5, name: "Eevee", img: "https://projectpokemon.org/images/normal-sprite/eevee.gif" },
     ];
+
+    // Pré-carrega os áudios quando o componente monta
+    React.useEffect(() => {
+        preloadAllPokemonAudio();
+    }, []);
 
     const handleVote = (id) => {
         const selected = candidates.find((c) => c.id === id);
@@ -24,6 +43,17 @@ export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote
     const handleConfirmClick = () => {
         if (onConfirmVote) {
             onConfirmVote();
+        }
+    };
+
+    const handleClick = (candidate: Candidate) => {
+        // Executa a lógica de voto
+        if (votedCandidate?.id === candidate.id) {
+            // Toca o áudio apenas quando for confirmar o voto
+            playPokemonAudio(candidate.name);
+            handleConfirmClick();
+        } else {
+            handleVote(candidate.id);
         }
     };
 
@@ -61,16 +91,13 @@ export default function Cards({ votedCandidate, setVotedCandidate, onConfirmVote
                         <span className="profileName">{candidate.name}</span>
                         <button
                             className="voteButton"
-                            onClick={() => {
-                                if (votedCandidate?.id === candidate.id) {
-                                    handleConfirmClick();
-                                } else {
-                                    handleVote(candidate.id);
-                                }
-                            }}
+                            onClick={() => handleClick(candidate)}
+                            disabled={isSubmitting}
                         >
                             <p>
-                                {votedCandidate?.id === candidate.id
+                                {isSubmitting && votedCandidate?.id === candidate.id
+                                    ? "Enviando..."
+                                    : votedCandidate?.id === candidate.id
                                     ? "Confirmo"
                                     : "votar"}
                             </p>
