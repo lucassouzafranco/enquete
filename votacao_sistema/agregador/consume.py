@@ -36,7 +36,7 @@ def read_message_from_queue():
             print("Failed to decode JSON:", body)
             return None
     else:
-        print("No message in queue.")
+        print("No message in queue.", flush=True)
         return None
 
 # Example usage

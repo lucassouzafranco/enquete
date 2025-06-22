@@ -4,7 +4,7 @@ URL="http://localhost:5000/submit"
 HEADERS="Content-Type: application/json"
 POKEMON_IDS=(1 4 7 25 133)
 
-for i in {1..10000}
+for i in {1..100}
 do
   RANDOM_ID=$(shuf -e "${POKEMON_IDS[@]}" -n 1)
   DATA="{\"pokemon_id\": $RANDOM_ID}"
