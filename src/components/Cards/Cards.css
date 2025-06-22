@@ -1,11 +1,11 @@
 .cardsWrapper {
-    margin-top: 3em;
+    margin-top: 1.5em;
     display: flex;
     align-items: center;
-    height: 50vh;
+    min-height: 50vh;
     justify-content: center;
     gap: 2em;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     padding: 0 2em;
 }
 
@@ -175,6 +175,7 @@
         gap: 1em;
         padding: 0 1em;
         flex-wrap: wrap;
+        min-height: 60vh;
     }
     
     .card {
@@ -208,29 +209,110 @@
 
 @media (max-width: 480px) {
     .cardsWrapper {
-        gap: 1em;
+        gap: 1.5em;
         flex-direction: column;
         height: auto;
+        min-height: 70vh;
         margin-top: 1em;
+        padding: 0 1em;
+        justify-content: flex-start;
     }
     
     .card {
-        width: 140px;
-        min-width: 120px;
+        width: 200px;
+        min-width: 180px;
         height: auto;
-        min-height: 200px;
+        min-height: 220px;
+        margin-bottom: 1em;
     }
     
     .selectedCard {
-        width: 180px;
-        min-width: 160px;
+        width: 240px;
+        min-width: 220px;
+        min-height: 250px;
     }
     
     .card .profileName {
-        font-size: 0.9em;
+        font-size: 1em;
     }
     
     .selectedCard .profileName {
+        font-size: 1.3em;
+    }
+    
+    .card button {
+        font-size: 1em;
+        height: 40px;
+        margin-top: 1.5em;
+    }
+    
+    .selectedCard .voteButton {
         font-size: 1.1em;
+        height: 45px;
+    }
+    
+    .avatarImageContainer {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .selectedCard .avatarImageContainer {
+        width: 110px;
+        height: 110px;
+    }
+}
+
+/* Ajuste específico para telas muito pequenas */
+@media (max-width: 450px) {
+    .cardsWrapper {
+        gap: 1.2em;
+        padding: 0 0.5em;
+    }
+    
+    .card {
+        width: 280px;
+        min-width: 260px;
+        height: auto;
+        min-height: 240px;
+        margin-bottom: 1.2em;
+        padding: 2em 1.5em 1em 1.5em;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .selectedCard {
+        width: 320px;
+        min-width: 300px;
+        min-height: 270px;
+        padding: 2.5em 2em 1.5em 2em;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    
+    .card .profileName {
+        font-size: 1.1em;
+    }
+    
+    .selectedCard .profileName {
+        font-size: 1.4em;
+    }
+    
+    .card button {
+        font-size: 1.1em;
+        height: 45px;
+        margin-top: 1.8em;
+    }
+    
+    .selectedCard .voteButton {
+        font-size: 1.2em;
+        height: 50px;
+    }
+    
+    .avatarImageContainer {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .selectedCard .avatarImageContainer {
+        width: 120px;
+        height: 120px;
     }
 }

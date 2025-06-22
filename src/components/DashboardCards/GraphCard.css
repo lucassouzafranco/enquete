@@ -124,6 +124,12 @@
     position: relative;
     display: flex;
     align-items: center;
+    transition: all 0.3s ease;
+}
+
+.progressBar.glow-animation {
+    animation: glowPulse 0.5s ease-in-out;
+    box-shadow: 0 0 20px currentColor;
 }
 
 .percentageText {
@@ -134,6 +140,12 @@
     z-index: 2;
     white-space: nowrap;
     color: #FFFFFF;
+    transition: all 0.3s ease;
+}
+
+.percentageText.glow-animation {
+    animation: glowPulse 0.5s ease-in-out;
+    text-shadow: 0 0 10px currentColor;
 }
 
 .candidatePercentage {
@@ -169,5 +181,133 @@
     25%, 75% {
         opacity: 0.3;
         background-color: #ff6b6b;
+    }
+}
+
+@keyframes glowPulse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsividade para telas médias */
+@media (max-width: 650px) {
+    .graphCard {
+        width: 100%;
+        max-width: 550px;
+        height: auto;
+        min-height: 380px;
+        padding: 15px 20px 25px 20px;
+    }
+    
+    .graphContent {
+        gap: 18px;
+    }
+    
+    .candidateBar {
+        gap: 12px;
+    }
+    
+    .candidateInfo {
+        width: 90px;
+        font-size: 15px;
+    }
+    
+    .percentageText {
+        font-size: 20px;
+        right: -70px;
+    }
+    
+    .progressBarContainer {
+        margin-right: 70px;
+    }
+    
+    .graphFooter {
+        margin-top: 25px;
+        font-size: 13px;
+    }
+}
+
+/* Responsividade para celulares */
+@media (max-width: 480px) {
+    .graphCard {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 350px;
+        padding: 15px 15px 20px 15px;
+        border-radius: 15px;
+    }
+    
+    .connectionStatus {
+        top: 15px;
+        right: 15px;
+        padding: 3px 6px;
+    }
+    
+    .connectedText,
+    .disconnectedText {
+        font-size: 10px;
+    }
+    
+    .graphContent {
+        gap: 15px;
+    }
+    
+    .candidateBar {
+        gap: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .candidateInfo {
+        width: 100%;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .progressBarContainer {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 5px;
+        position: relative;
+    }
+    
+    .percentageText {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        font-weight: 600;
+        color: #FFFFFF;
+        z-index: 10;
+        transition: color 0.3s ease;
+    }
+    
+    /* Quando a porcentagem está dentro da barra, mantém branco */
+    .progressBar .percentageText {
+        color: #FFFFFF;
+        font-weight: 700;
+    }
+    
+    .graphFooter {
+        margin-top: 20px;
+        font-size: 12px;
+        text-align: center;
+    }
+    
+    .pokemonName {
+        padding: 3px 6px;
+        font-size: 14px;
     }
 } 
