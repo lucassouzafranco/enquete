@@ -2,7 +2,8 @@
 
 URL="http://localhost:5000/submit"
 HEADERS="Content-Type: application/json"
-POKEMON_IDS=(1 4 7 25 133)
+#POKEMON_IDS=(1 4 7 25 133)
+POKEMON_IDS=(4 4 4 4 4)
 
 for i in {1..100}
 do
