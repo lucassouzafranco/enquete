@@ -3,7 +3,7 @@ import './GraphCard.css';
 import { setUpdateUICallback, calculatePercentages, getTotalVotes, getVoteData } from '../../socket/processMessage.js';
 import wsClient from '../../socket/wsclient.js';
 
-export default function GraphCard() {
+export default function GraphCard({ onPokemonSelect }) {
   const [candidates, setCandidates] = useState([
     { name: 'Bulbasauro', percentage: 0, color: '#4ade80', trend: 'up' },
     { name: 'Pikachu', percentage: 0, color: '#fbbf24', trend: 'up' },
@@ -28,6 +28,23 @@ export default function GraphCard() {
     );
     
     setTotalVotes(total);
+  };
+
+  // Função para lidar com clique no nome do Pokémon
+  const handlePokemonClick = (pokemonName) => {
+    // Mapear nomes para dados completos dos Pokémon com GIFs da API
+    const pokemonData = {
+      'Bulbasauro': { name: 'Bulbasauro', img: 'https://projectpokemon.org/images/normal-sprite/bulbasaur.gif' },
+      'Pikachu': { name: 'Pikachu', img: 'https://projectpokemon.org/images/normal-sprite/pikachu.gif' },
+      'Charmander': { name: 'Charmander', img: 'https://projectpokemon.org/images/normal-sprite/charmander.gif' },
+      'Squirtle': { name: 'Squirtle', img: 'https://projectpokemon.org/images/normal-sprite/squirtle.gif' },
+      'Eevee': { name: 'Eevee', img: 'https://projectpokemon.org/images/normal-sprite/eevee.gif' }
+    };
+
+    const selectedPokemon = pokemonData[pokemonName];
+    if (selectedPokemon && onPokemonSelect) {
+      onPokemonSelect(selectedPokemon);
+    }
   };
 
   useEffect(() => {
@@ -69,7 +86,13 @@ export default function GraphCard() {
         {candidates.map((candidate) => (
           <div className="candidateBar" key={candidate.name}>
             <div className="candidateInfo">
-              <span>{candidate.name}</span>
+              <span 
+                className="pokemonName"
+                onClick={() => handlePokemonClick(candidate.name)}
+                style={{ cursor: 'pointer' }}
+              >
+                {candidate.name}
+              </span>
             </div>
             <div className="progressBarContainer">
               <div

@@ -90,6 +90,23 @@
     color: #b0b0d0;
 }
 
+.pokemonName {
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pokemonName:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.pokemonName:active {
+    transform: scale(0.95);
+}
+
 .progressBarContainer {
     flex-grow: 1;
     height: 32px;

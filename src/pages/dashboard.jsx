@@ -9,6 +9,7 @@ import { initializeVoteData } from '../socket/processMessage.js';
 
 export default function Dashboard() {
   const [votedCandidate, setVotedCandidate] = useState(null);
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,14 +29,23 @@ export default function Dashboard() {
     navigate('/');
   };
 
+  const handlePokemonSelect = (pokemon) => {
+    setSelectedPokemon(pokemon);
+  };
+
   return (
     <div className="dashboardPage">
       <Menu />
       <div className="dashboardContent">
         <h1>Você votou! Aqui estão dados sobre os candidatos</h1>
         <div className="cardsContainer">
-          {votedCandidate && <VotedCard votedCandidate={votedCandidate} />}
-          <GraphCard />
+          {votedCandidate && (
+            <VotedCard 
+              votedCandidate={votedCandidate} 
+              selectedPokemon={selectedPokemon}
+            />
+          )}
+          <GraphCard onPokemonSelect={handlePokemonSelect} />
         </div>
         <div className="dashboardActions">
           <button className="returnButton" onClick={handleReturnToHome}>
