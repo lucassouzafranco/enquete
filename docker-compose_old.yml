@@ -4,18 +4,15 @@ services:
   urna:
     build:
       context: ./votacao_sistema/urna
+    container_name: urna_service
     ports:
       - "5000:5000"
     depends_on:
       - agregador
-    deploy:
-      replicas: 10
-      restart_policy:
-        condition: any
+    restart: unless-stopped
 
   agregador:
     build:
       context: ./votacao_sistema/agregador
-    deploy:
-      restart_policy:
-        condition: any
+    container_name: agregador_service
+    restart: unless-stopped
