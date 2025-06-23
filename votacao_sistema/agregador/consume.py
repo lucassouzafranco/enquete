@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import pika
 
-# Carrega variáveis de ambiente
+
 env_path = Path(__file__).resolve().parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
@@ -30,15 +30,13 @@ def read_message_from_queue():
     if method_frame:
         try:
             message = json.loads(body)
-            # print("Received JSON message:", message)  # Debug print
             return message
+
         except json.JSONDecodeError:
-            print("Failed to decode JSON:", body)
             return None
     else:
-        print("No message in queue.", flush=True)
         return None
 
-# Example usage
+#Teste, remove apenas uma mensagem da fila
 if __name__ == "__main__":
     data = read_message_from_queue()

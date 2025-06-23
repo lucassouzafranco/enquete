@@ -1,11 +1,12 @@
 #!/bin/bash
 
-URL="http://localhost:5000/submit"
+URL="45.178.181.60:5000/submit"
+#URL="localhost:5000/submit" 
 HEADERS="Content-Type: application/json"
 #POKEMON_IDS=(1 4 7 25 133)
-POKEMON_IDS=(4 4 4 4 4)
+POKEMON_IDS=(25 25 25 25 25)
 
-for i in {1..100}
+for i in {1..1}
 do
   RANDOM_ID=$(shuf -e "${POKEMON_IDS[@]}" -n 1)
   DATA="{\"pokemon_id\": $RANDOM_ID}"
