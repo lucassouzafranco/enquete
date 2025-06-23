@@ -32,7 +32,7 @@ def send(data):
         port=RABBITMQ_PORT,
         virtual_host=RABBITMQ_VHOST,
         credentials=credentials,
-        ssl_options=pika.SSLOptions(ssl_context) #DESCOMENTAR EM PRODUÇÃO
+        # ssl_options=pika.SSLOptions(ssl_context) #DESCOMENTAR EM PRODUÇÃO
     )
 
     connection = pika.BlockingConnection(parameters)

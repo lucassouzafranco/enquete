@@ -6,7 +6,7 @@ HEADERS="Content-Type: application/json"
 #POKEMON_IDS=(1 4 7 25 133)
 POKEMON_IDS=(25 25 25 25 25)
 
-for i in {1..1}
+for i in {1..10}
 do
   RANDOM_ID=$(shuf -e "${POKEMON_IDS[@]}" -n 1)
   DATA="{\"pokemon_id\": $RANDOM_ID}"
@@ -15,5 +15,4 @@ do
   curl -s -o /dev/null -X POST "$URL" -H "$HEADERS" -d "$DATA"
 done
 
-echo "Finished sending 10,000 requests."
 
