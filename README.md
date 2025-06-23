@@ -15,7 +15,7 @@ A arquitetura completa do sistema está representada no seguinte diagrama:
 
 * **Frontend (Interface Web)**:
 
-  * Desenvolvido por **INTEGRANTE 1** e **INTEGRANTE 2**.
+  * Desenvolvido por **Thalisson** e **Lucas**.
   * Disponível online via Vercel: [https://enquete-jade.vercel.app/](https://enquete-jade.vercel.app/)
   * Esta aplicação permite ao usuário final interagir com o sistema e registrar votos.
 
@@ -101,8 +101,8 @@ A aplicação web que permite aos eleitores registrar seus votos está disponív
 
 Essa interface foi desenvolvida por:
 
-* **THALISSON**
-* **LUCAS**
+* **Thalisson Lopes Gonçalves, 7016**
+* **Lucas Souza Franco, 7001**
 
 ---
 
@@ -110,9 +110,12 @@ Essa interface foi desenvolvida por:
 
 A infraestrutura backend, incluindo a API da urna, o agregador e os scripts de integração com RabbitMQ e o core, foi desenvolvida por:
 
-* **RODRIGO JEREMIAS MENDES 6315**
-* **KAYKY**
-* **RONALD**
+* **Rodrigo Jeremias Mendess, 6315**
+* **Kayky Cristof Domingos, 8118**
+* **Ronald Augusto Domingos, 7024**
+
+
+
 
 
 
