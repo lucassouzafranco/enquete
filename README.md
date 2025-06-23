@@ -8,7 +8,7 @@ Este projeto, desenvolvido por alunos da **Universidade Federal de Viçosa (UFV)
 
 A arquitetura completa do sistema está representada no seguinte diagrama:
 
-📷 **[Ver imagem da arquitetura](./arquitetura.png)** 
+![Arquitetura do Sistema](./arquitetura.png)
 
 
 ### Componentes:
@@ -101,8 +101,8 @@ A aplicação web que permite aos eleitores registrar seus votos está disponív
 
 Essa interface foi desenvolvida por:
 
-* **INTEGRANTE 1**
-* **INTEGRANTE 2**
+* **THALISSON**
+* **LUCAS**
 
 ---
 
@@ -110,9 +110,9 @@ Essa interface foi desenvolvida por:
 
 A infraestrutura backend, incluindo a API da urna, o agregador e os scripts de integração com RabbitMQ e o core, foi desenvolvida por:
 
-* **INTEGRANTE 3**
-* **INTEGRANTE 4**
-* **INTEGRANTE 5**
+* **RODRIGO JEREMIAS MENDES 6315**
+* **KAYKY**
+* **RONALD**
 
 
 
