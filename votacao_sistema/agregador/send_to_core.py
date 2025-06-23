@@ -6,21 +6,21 @@ import uuid
 
 
 #DADOS DA FILA DO CORE
-# RABBITMQ_HOST = 'chimpanzee.rmq.cloudamqp.com'
-# RABBITMQ_PORT = 5671
-# RABBITMQ_USER = 'edxgujmk'
-# RABBITMQ_PASSWORD = 'Wm1vy2ea99LIfZh-ZZyl3DhWlLDlNcdH'
-# RABBITMQ_VHOST = 'edxgujmk'
-# QUEUE_NAME = 'lotes_de_dados'
+RABBITMQ_HOST = 'chimpanzee.rmq.cloudamqp.com'
+RABBITMQ_PORT = 5671
+RABBITMQ_USER = 'edxgujmk'
+RABBITMQ_PASSWORD = 'Wm1vy2ea99LIfZh-ZZyl3DhWlLDlNcdH'
+RABBITMQ_VHOST = 'edxgujmk'
+QUEUE_NAME = 'lotes_de_dados'
 
 #DAGOS DA FILA DE DEBUG
-RABBITMQ_HOST = '45.178.181.110'
-RABBITMQ_PORT = 5672
-RABBITMQ_USER = 'new_user'
-RABBITMQ_VHOST = '/'
+# RABBITMQ_HOST = '45.178.181.110'
+# RABBITMQ_PORT = 5672
+# RABBITMQ_USER = 'new_user'
+# RABBITMQ_VHOST = '/'
 
-RABBITMQ_PASSWORD = 'pass'
-QUEUE_NAME = 'debug'
+# RABBITMQ_PASSWORD = 'pass'
+# QUEUE_NAME = 'debug'
 
 
 def send(data):
@@ -32,7 +32,7 @@ def send(data):
         port=RABBITMQ_PORT,
         virtual_host=RABBITMQ_VHOST,
         credentials=credentials,
-        # ssl_options=pika.SSLOptions(ssl_context) #DESCOMENTAR EM PRODUÇÃO
+        ssl_options=pika.SSLOptions(ssl_context) #DESCOMENTAR EM PRODUÇÃO
     )
 
     connection = pika.BlockingConnection(parameters)
