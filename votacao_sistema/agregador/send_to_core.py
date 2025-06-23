@@ -5,7 +5,7 @@ from datetime import datetime
 import uuid
 
 
-#DADOS DA FILA DO CORE
+#FILA DO CORE
 RABBITMQ_HOST = 'chimpanzee.rmq.cloudamqp.com'
 RABBITMQ_PORT = 5671
 RABBITMQ_USER = 'edxgujmk'
@@ -13,14 +13,13 @@ RABBITMQ_PASSWORD = 'Wm1vy2ea99LIfZh-ZZyl3DhWlLDlNcdH'
 RABBITMQ_VHOST = 'edxgujmk'
 QUEUE_NAME = 'lotes_de_dados'
 
-#DAGOS DA FILA DE DEBUG
-# RABBITMQ_HOST = '45.178.181.110'
-# RABBITMQ_PORT = 5672
-# RABBITMQ_USER = 'new_user'
-# RABBITMQ_VHOST = '/'
-
-# RABBITMQ_PASSWORD = 'pass'
-# QUEUE_NAME = 'debug'
+#FILA DE DEBUG
+DEBUG_RABBITMQ_HOST = '45.178.181.110'
+DEBUG_RABBITMQ_PORT = 5672
+DEBUG_RABBITMQ_USER = 'new_user'
+DEBUG_RABBITMQ_PASSWORD = 'pass'
+DEBUG_RABBITMQ_VHOST = '/'
+DEBUG_QUEUE_NAME = 'debug'
 
 
 def send(data):
@@ -32,7 +31,7 @@ def send(data):
         port=RABBITMQ_PORT,
         virtual_host=RABBITMQ_VHOST,
         credentials=credentials,
-        ssl_options=pika.SSLOptions(ssl_context) #DESCOMENTAR EM PRODUÇÃO
+        ssl_options=pika.SSLOptions(ssl_context)  # SSL enabled
     )
 
     connection = pika.BlockingConnection(parameters)
@@ -46,25 +45,39 @@ def send(data):
         routing_key=QUEUE_NAME,
         body=message,
         properties=pika.BasicProperties(
-            delivery_mode=2  
+            delivery_mode=2
         )
     )
 
-    print("Mensagem enviada com sucesso.")
+    print("Mensagem enviada com sucesso para a fila do core.")
     connection.close()
 
-if __name__ == "__main__":
-    example_data = {
-        "batchId": str(uuid.uuid4()),
-        "sourceNodeId": "NODE_001",
-        "dataPoints": [
-            {
-                "type": "votacao_teste_thales",
-                "objectIdentifier": "Romário",
-                "valor": 100.0,
-                "datetime": datetime.utcnow().isoformat()
-            }
-        ]
-    }
 
-    send(example_data)
+def send_debug(data):
+    credentials = pika.PlainCredentials(DEBUG_RABBITMQ_USER, DEBUG_RABBITMQ_PASSWORD)
+    parameters = pika.ConnectionParameters(
+        host=DEBUG_RABBITMQ_HOST,
+        port=DEBUG_RABBITMQ_PORT,
+        virtual_host=DEBUG_RABBITMQ_VHOST,
+        credentials=credentials,
+        ssl_options=None 
+    )
+
+    connection = pika.BlockingConnection(parameters)
+    channel = connection.channel()
+
+    channel.queue_declare(queue=DEBUG_QUEUE_NAME, durable=True)
+
+    message = json.dumps(data)
+    channel.basic_publish(
+        exchange='',
+        routing_key=DEBUG_QUEUE_NAME,
+        body=message,
+        properties=pika.BasicProperties(
+            delivery_mode=2 
+        )
+    )
+
+    print("Mensagem enviada com sucesso para a fila de debug.")
+    connection.close()
+

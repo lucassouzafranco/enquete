@@ -3,7 +3,7 @@ import threading
 from datetime import datetime
 import uuid
 from consume import read_message_from_queue 
-from send_to_core import send  
+from send_to_core import send, send_debug
 
 
 #Este código utiliza o consume para coletar mensagens da fila_agregador e faz um batch com os dados.
@@ -64,6 +64,7 @@ def send_aggregated_data(max_interval=1, vote_threshold=10):
                 print(batch, flush=True)
                 
                 send(batch)
+                send_debug(batch)
 
                 aggregated_data.clear()
                 vote_counter = 0
