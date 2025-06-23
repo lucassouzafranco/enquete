@@ -8,7 +8,7 @@ Este projeto, desenvolvido por alunos da **Universidade Federal de Viçosa (UFV)
 
 A arquitetura completa do sistema está representada no seguinte diagrama:
 
-![Arquitetura do Sistema](./arquitetura.png)
+![Arquitetura do Sistema](./votacao_sistema/arquitetura.png)
 
 
 ### Componentes:
